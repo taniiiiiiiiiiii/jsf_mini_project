@@ -153,3 +153,4 @@ INSERT INTO complaint_history (complaint_id, updated_by, old_status, new_status,
 
 (5, 8, NULL, 'Submitted', 'Urgent sewage overflow reported.', DATE_SUB(NOW(), INTERVAL 1 DAY)),
 (5, 1, 'Submitted', 'Under Review', 'Prioritized by Administrator due to school proximity. Assigned to Drainage Superintendent Manoj Kulkarni.', NOW());
+
