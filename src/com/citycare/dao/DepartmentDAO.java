@@ -25,7 +25,7 @@ public class DepartmentDAO {
                 list.add(d);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("DepartmentDAO database operation", e);
         }
         return list;
     }
@@ -47,7 +47,7 @@ public class DepartmentDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("DepartmentDAO database operation", e);
         }
         return null;
     }
@@ -61,7 +61,7 @@ public class DepartmentDAO {
                 return rs.getInt(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("DepartmentDAO database operation", e);
         }
         return 0;
     }

@@ -1,17 +1,16 @@
 -- =======================================================
 -- CityCare: Smart City Complaint Management System
--- Database Setup and Seed Data Script
+-- Safe, repeatable database setup and seed data script for MySQL/TiDB.
 -- Compatible with MySQL 8.0+
 -- =======================================================
 
-DROP DATABASE IF EXISTS citycare_db;
-CREATE DATABASE citycare_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS citycare_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE citycare_db;
 
 -- -------------------------------------------------------
 -- 1. Departments Table
 -- -------------------------------------------------------
-CREATE TABLE departments (
+CREATE TABLE IF NOT EXISTS departments (
     department_id INT AUTO_INCREMENT PRIMARY KEY,
     department_name VARCHAR(100) NOT NULL UNIQUE,
     description VARCHAR(255) NOT NULL,
@@ -22,7 +21,7 @@ CREATE TABLE departments (
 -- -------------------------------------------------------
 -- 2. Users Table (Citizens, Officers, Admins)
 -- -------------------------------------------------------
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     full_name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
@@ -37,7 +36,7 @@ CREATE TABLE users (
 -- -------------------------------------------------------
 -- 3. Officers Table (Mapping officers to departments)
 -- -------------------------------------------------------
-CREATE TABLE officers (
+CREATE TABLE IF NOT EXISTS officers (
     officer_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL UNIQUE,
     department_id INT NOT NULL,
@@ -50,7 +49,7 @@ CREATE TABLE officers (
 -- -------------------------------------------------------
 -- 4. Complaints Table
 -- -------------------------------------------------------
-CREATE TABLE complaints (
+CREATE TABLE IF NOT EXISTS complaints (
     complaint_id INT AUTO_INCREMENT PRIMARY KEY,
     tracking_id VARCHAR(30) NOT NULL UNIQUE,
     citizen_id INT NOT NULL,
@@ -73,7 +72,7 @@ CREATE TABLE complaints (
 -- -------------------------------------------------------
 -- 5. Complaint History / Audit Trail
 -- -------------------------------------------------------
-CREATE TABLE complaint_history (
+CREATE TABLE IF NOT EXISTS complaint_history (
     history_id INT AUTO_INCREMENT PRIMARY KEY,
     complaint_id INT NOT NULL,
     updated_by INT NOT NULL,
@@ -94,7 +93,7 @@ CREATE TABLE complaint_history (
 -- =======================================================
 
 -- Seed Departments
-INSERT INTO departments (department_id, department_name, description, contact_email) VALUES
+INSERT IGNORE INTO departments (department_id, department_name, description, contact_email) VALUES
 (1, 'Roads and Infrastructure', 'Maintenance of roads, bridges, pavements, and traffic infrastructure', 'roads@citycare.gov'),
 (2, 'Sanitation', 'Solid waste management, garbage clearance, and street cleanliness', 'sanitation@citycare.gov'),
 (3, 'Water Supply', 'Potable water supply, pipe leakage repairs, and pipeline maintenance', 'water@citycare.gov'),
@@ -103,11 +102,11 @@ INSERT INTO departments (department_id, department_name, description, contact_em
 
 -- Seed Users
 -- 1: Admin
-INSERT INTO users (user_id, full_name, email, phone, address, password_hash, role, status) VALUES
+INSERT IGNORE INTO users (user_id, full_name, email, phone, address, password_hash, role, status) VALUES
 (1, 'CityCare Administrator', 'admin@citycare.gov', '9876543210', 'Municipal Corporation Central Headquarters, Civic Center', 'e86f78a8a3caf0b60d8e74e5942aa6d86dc150cd3c03338aef25b7d2d7e3acc7', 'ADMIN', 'ACTIVE');
 
 -- 2-6: Municipal Officers
-INSERT INTO users (user_id, full_name, email, phone, address, password_hash, role, status) VALUES
+INSERT IGNORE INTO users (user_id, full_name, email, phone, address, password_hash, role, status) VALUES
 (2, 'Rajesh Varma (Roads)', 'officer.roads@citycare.gov', '9876500001', 'Ward 12 Engineering Division', 'b3d8eb159de738ce469ded2b79f1564256ca6650db44be6fe868c9a3287826d2', 'OFFICER', 'ACTIVE'),
 (3, 'Sunita Deshmukh (Sanitation)', 'officer.sanitation@citycare.gov', '9876500002', 'Health & Sanitation Wing, Zone 3', 'b3d8eb159de738ce469ded2b79f1564256ca6650db44be6fe868c9a3287826d2', 'OFFICER', 'ACTIVE'),
 (4, 'Arun Nair (Water)', 'officer.water@citycare.gov', '9876500003', 'Public Water Works Dept, Division B', 'b3d8eb159de738ce469ded2b79f1564256ca6650db44be6fe868c9a3287826d2', 'OFFICER', 'ACTIVE'),
@@ -115,12 +114,12 @@ INSERT INTO users (user_id, full_name, email, phone, address, password_hash, rol
 (6, 'Manoj Kulkarni (Drainage)', 'officer.drainage@citycare.gov', '9876500005', 'Sewerage Operations Command, Zone 1', 'b3d8eb159de738ce469ded2b79f1564256ca6650db44be6fe868c9a3287826d2', 'OFFICER', 'ACTIVE');
 
 -- 7-8: Citizens
-INSERT INTO users (user_id, full_name, email, phone, address, password_hash, role, status) VALUES
+INSERT IGNORE INTO users (user_id, full_name, email, phone, address, password_hash, role, status) VALUES
 (7, 'Tanisha Rao', 'citizen@citycare.gov', '9812345678', 'Flat 402, Green Valley Enclave, MG Road', '2de7e52a7a2095efc4f44de114542e045912e3711d286ee64943c95afeae82ab', 'CITIZEN', 'ACTIVE'),
 (8, 'Rahul Sharma', 'rahul.sharma@example.com', '9823456789', 'House 14, Sector 7, Outer Ring Road', '2de7e52a7a2095efc4f44de114542e045912e3711d286ee64943c95afeae82ab', 'CITIZEN', 'ACTIVE');
 
 -- Link Officers to Departments
-INSERT INTO officers (officer_id, user_id, department_id, designation) VALUES
+INSERT IGNORE INTO officers (officer_id, user_id, department_id, designation) VALUES
 (1, 2, 1, 'Senior Infrastructure Engineer'),
 (2, 3, 2, 'Chief Sanitary Inspector'),
 (3, 4, 3, 'Water Supply Officer'),
@@ -128,7 +127,7 @@ INSERT INTO officers (officer_id, user_id, department_id, designation) VALUES
 (5, 6, 5, 'Drainage & Sewage Superintendent');
 
 -- Seed Realistic Initial Complaints
-INSERT INTO complaints (complaint_id, tracking_id, citizen_id, title, category, description, location, status, priority, department_id, assigned_officer_id, created_at) VALUES
+INSERT IGNORE INTO complaints (complaint_id, tracking_id, citizen_id, title, category, description, location, status, priority, department_id, assigned_officer_id, created_at) VALUES
 (1, 'CC-2026-1001', 7, 'Severe pothole near Metro Pillar 142', 'Potholes and damaged roads', 'Large deep pothole causing vehicle damage and traffic bottleneck during peak hours.', 'MG Road, near Metro Pillar 142', 'In Progress', 'High', 1, 2, DATE_SUB(NOW(), INTERVAL 3 DAY)),
 (2, 'CC-2026-1002', 7, 'Garbage bin overflowing for three days', 'Overflowing garbage bins', 'Municipal bin on 4th cross is completely overflowing and dogs are scattering waste.', '4th Cross, Green Valley Enclave, MG Road', 'Assigned', 'Medium', 2, 3, DATE_SUB(NOW(), INTERVAL 2 DAY)),
 (3, 'CC-2026-1003', 7, 'Major pipeline leakage wasting drinking water', 'Water leakage', 'Clean water is gushing out of broken underground pipe onto the pedestrian pavement.', 'Opposite State Bank, Ring Road', 'Resolved', 'Urgent', 3, 4, DATE_SUB(NOW(), INTERVAL 5 DAY)),
@@ -136,7 +135,7 @@ INSERT INTO complaints (complaint_id, tracking_id, citizen_id, title, category, 
 (5, 'CC-2026-1005', 8, 'Sewage overflow near Primary School', 'Drainage and sewage problems', 'Drainage chamber is clogged and sewage water is flooding the school entrance gate.', 'Primary School Lane, Sector 7', 'Under Review', 'Urgent', 5, 6, DATE_SUB(NOW(), INTERVAL 1 DAY));
 
 -- Seed Complaint History
-INSERT INTO complaint_history (complaint_id, updated_by, old_status, new_status, remarks, updated_at) VALUES
+INSERT IGNORE INTO complaint_history (complaint_id, updated_by, old_status, new_status, remarks, updated_at) VALUES
 (1, 7, NULL, 'Submitted', 'Complaint registered by citizen with initial photos.', DATE_SUB(NOW(), INTERVAL 3 DAY)),
 (1, 1, 'Submitted', 'Assigned', 'Assigned to Roads and Infrastructure Department officer Rajesh Varma.', DATE_SUB(NOW(), INTERVAL 2 DAY)),
 (1, 2, 'Assigned', 'In Progress', 'Inspection completed. Asphalt patch team scheduled for tonight.', DATE_SUB(NOW(), INTERVAL 1 DAY)),

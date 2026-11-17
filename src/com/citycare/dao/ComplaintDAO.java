@@ -69,17 +69,17 @@ public class ComplaintDAO {
                 try {
                     con.rollback();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    DBConnection.logDatabaseError("ComplaintDAO transaction rollback", ex);
                 }
             }
-            e.printStackTrace();
+            DBConnection.logDatabaseError("ComplaintDAO database operation", e);
         } finally {
             if (con != null) {
                 try {
                     con.setAutoCommit(true);
                     con.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    DBConnection.logDatabaseError("ComplaintDAO transaction rollback", ex);
                 }
             }
         }
@@ -97,7 +97,7 @@ public class ComplaintDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("ComplaintDAO database operation", e);
         }
         return null;
     }
@@ -113,7 +113,7 @@ public class ComplaintDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("ComplaintDAO database operation", e);
         }
         return null;
     }
@@ -130,7 +130,7 @@ public class ComplaintDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("ComplaintDAO database operation", e);
         }
         return list;
     }
@@ -157,7 +157,7 @@ public class ComplaintDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("ComplaintDAO database operation", e);
         }
         return list;
     }
@@ -182,7 +182,7 @@ public class ComplaintDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("ComplaintDAO database operation", e);
         }
         return list;
     }
@@ -232,17 +232,17 @@ public class ComplaintDAO {
                 try {
                     con.rollback();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    DBConnection.logDatabaseError("ComplaintDAO transaction rollback", ex);
                 }
             }
-            e.printStackTrace();
+            DBConnection.logDatabaseError("ComplaintDAO database operation", e);
         } finally {
             if (con != null) {
                 try {
                     con.setAutoCommit(true);
                     con.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    DBConnection.logDatabaseError("ComplaintDAO transaction rollback", ex);
                 }
             }
         }
@@ -301,17 +301,17 @@ public class ComplaintDAO {
                 try {
                     con.rollback();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    DBConnection.logDatabaseError("ComplaintDAO transaction rollback", ex);
                 }
             }
-            e.printStackTrace();
+            DBConnection.logDatabaseError("ComplaintDAO database operation", e);
         } finally {
             if (con != null) {
                 try {
                     con.setAutoCommit(true);
                     con.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    DBConnection.logDatabaseError("ComplaintDAO transaction rollback", ex);
                 }
             }
         }
@@ -345,7 +345,7 @@ public class ComplaintDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("ComplaintDAO database operation", e);
         }
         return list;
     }
@@ -374,7 +374,7 @@ public class ComplaintDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("ComplaintDAO database operation", e);
         }
         return stats;
     }
@@ -403,7 +403,7 @@ public class ComplaintDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("ComplaintDAO database operation", e);
         }
         return stats;
     }
@@ -444,7 +444,7 @@ public class ComplaintDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("ComplaintDAO database operation", e);
         }
         return stats;
     }

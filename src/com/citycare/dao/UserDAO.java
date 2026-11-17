@@ -30,7 +30,7 @@ public class UserDAO {
                 return true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("UserDAO database operation", e);
         }
         return false;
     }
@@ -44,7 +44,7 @@ public class UserDAO {
                 return rs.next();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("UserDAO database operation", e);
         }
         return false;
     }
@@ -63,7 +63,7 @@ public class UserDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("UserDAO database operation", e);
         }
         return null;
     }
@@ -79,7 +79,7 @@ public class UserDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("UserDAO database operation", e);
         }
         return null;
     }
@@ -95,7 +95,7 @@ public class UserDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("UserDAO database operation", e);
         }
         return null;
     }
@@ -110,7 +110,7 @@ public class UserDAO {
                 list.add(mapRowToUser(rs));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("UserDAO database operation", e);
         }
         return list;
     }
@@ -123,7 +123,7 @@ public class UserDAO {
             ps.setInt(2, userId);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("UserDAO database operation", e);
         }
         return false;
     }
@@ -135,7 +135,7 @@ public class UserDAO {
             ps.setInt(1, userId);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("UserDAO database operation", e);
         }
         return false;
     }
@@ -151,7 +151,7 @@ public class UserDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("UserDAO database operation", e);
         }
         return 0;
     }

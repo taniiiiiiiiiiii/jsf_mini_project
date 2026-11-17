@@ -25,7 +25,7 @@ public class OfficerDAO {
                 list.add(mapRowToOfficer(rs));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("OfficerDAO database operation", e);
         }
         return list;
     }
@@ -48,7 +48,7 @@ public class OfficerDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("OfficerDAO database operation", e);
         }
         return list;
     }
@@ -69,7 +69,7 @@ public class OfficerDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("OfficerDAO database operation", e);
         }
         return null;
     }
@@ -90,7 +90,7 @@ public class OfficerDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("OfficerDAO database operation", e);
         }
         return null;
     }
@@ -137,17 +137,17 @@ public class OfficerDAO {
                 try {
                     con.rollback();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    DBConnection.logDatabaseError("OfficerDAO transaction rollback", ex);
                 }
             }
-            e.printStackTrace();
+            DBConnection.logDatabaseError("OfficerDAO database operation", e);
         } finally {
             if (con != null) {
                 try {
                     con.setAutoCommit(true);
                     con.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    DBConnection.logDatabaseError("OfficerDAO transaction rollback", ex);
                 }
             }
         }
@@ -163,7 +163,7 @@ public class OfficerDAO {
             ps.setInt(3, officerId);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("OfficerDAO database operation", e);
         }
         return false;
     }
@@ -177,7 +177,7 @@ public class OfficerDAO {
                 return rs.getInt(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBConnection.logDatabaseError("OfficerDAO database operation", e);
         }
         return 0;
     }

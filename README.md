@@ -105,24 +105,17 @@ Before setting up the project, ensure you have:
 
 ## 5. Database Setup Instructions
 
-1. Open your terminal or MySQL command line client.
-2. Log into MySQL as `root`:
-   ```bash
-   mysql -u root -p
-   ```
-3. Execute the database initialization script:
-   ```sql
-   source database/citycare_db.sql;
-   ```
-   *Or from PowerShell / Command Prompt:*
-   ```bash
-   mysql -u root -proot -e "source database/citycare_db.sql"
-   ```
-4. Verify that database `citycare_db` and all 5 tables are created:
-   ```sql
-   USE citycare_db;
-   SHOW TABLES;
-   ```
+CityCare uses MySQL-compatible SQL and can run with MySQL 8+ or TiDB Cloud Starter. The schema script at `database/citycare_db.sql` creates the five tables and sample records. It is safe to run more than once: it does not drop the database or overwrite existing seed rows.
+
+For TiDB Cloud Starter, open the cluster's SQL Editor, select or connect to `citycare_db`, and execute `database/citycare_db.sql`. Then verify the schema:
+
+```sql
+USE citycare_db;
+SHOW TABLES;
+SELECT COUNT(*) FROM users;
+```
+
+The tables must include `departments`, `users`, `officers`, `complaints`, and `complaint_history`. If a table is missing, rerun the schema script; its `CREATE TABLE IF NOT EXISTS` statements create missing tables without deleting existing data.
 
 ### Database Schema Structure:
 - `departments`: `department_id`, `department_name`, `description`, `contact_email`, `created_at`
@@ -131,14 +124,11 @@ Before setting up the project, ensure you have:
 - `complaints`: `complaint_id`, `tracking_id`, `citizen_id`, `title`, `category`, `description`, `location`, `image_path`, `status`, `priority`, `department_id`, `assigned_officer_id`, `created_at`, `updated_at`
 - `complaint_history`: `history_id`, `complaint_id`, `updated_by`, `old_status`, `new_status`, `remarks`, `updated_at`
 
-### Database Credentials Configuration:
-If your MySQL username or password differs from `root` / `root`, update the connection credentials in:
-`src/com/citycare/util/DBConnection.java`
-```java
-private static final String JDBC_URL = "jdbc:mysql://localhost:3306/citycare_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8";
-private static final String JDBC_USER = "root";
-private static final String JDBC_PASSWORD = "root";
-```
+### Database Connection Configuration
+
+The application reads `JDBC_URL`, `DB_USER`, and `DB_PASSWORD` from its environment. Do not commit database credentials. For TiDB Cloud Starter, use the JDBC URL supplied for the cluster with `sslMode=VERIFY_IDENTITY`, and use the exact instance-prefixed username shown by TiDB (for example, `<prefix>.root`). Java and Connector/J use the JVM's trusted root certificates for TLS identity verification.
+
+On Render, set these three environment variables in the CityCare web service. The URL should select `citycare_db`; the username must include the TiDB instance prefix. After setting them, redeploy the service.
 
 ---
 
