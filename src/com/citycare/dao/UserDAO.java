@@ -64,6 +64,7 @@ public class UserDAO {
             }
         } catch (SQLException e) {
             DBConnection.logDatabaseError("UserDAO database operation", e);
+            throw new IllegalStateException("Database authentication is unavailable.", e);
         }
         return null;
     }

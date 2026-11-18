@@ -57,7 +57,15 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
-        User user = userDAO.authenticate(email, password);
+        User user;
+        try {
+            user = userDAO.authenticate(email, password);
+        } catch (IllegalStateException e) {
+            req.setAttribute("errorMessage", "Login is temporarily unavailable because the database could not be reached. Check the Eclipse Tomcat console and database configuration.");
+            req.setAttribute("email", email);
+            req.getRequestDispatcher("/login.jsp").forward(req, resp);
+            return;
+        }
 
         if (user == null) {
             req.setAttribute("errorMessage", "Invalid email or password.");

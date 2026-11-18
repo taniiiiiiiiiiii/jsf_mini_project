@@ -136,9 +136,9 @@ On Render, set these three environment variables in the CityCare web service. Th
 
 1. Open **Eclipse IDE for Enterprise Java and Web Developers**.
 2. Go to **File** → **Import...** → **General** → **Existing Projects into Workspace**.
-3. Select **Root Directory** and browse to the repository folder:
+3. Select **Root Directory** and browse to the folder containing the `CityCare` project:
    ```
-   C:\Users\Tanisha\.gemini\antigravity\scratch\jsf_mini_project
+   <your-local-copy-of-jsf_mini_project>\CityCare
    ```
 4. Check **CityCare** in the projects list and click **Finish**.
 5. Configure the Tomcat 9 Runtime:
@@ -147,11 +147,20 @@ On Render, set these three environment variables in the CityCare web service. Th
    - Select **Apache** → **Tomcat v9.0 Server**.
    - Point to your Tomcat 9 directory: `C:\Home\Tomcat\apache-tomcat-9.0.121`.
    - Click **Next**, add **CityCare** to the **Configured** column, and click **Finish**.
-6. Right-click on the server and click **Start**.
-7. Access the application in your browser at:
+6. Configure the database environment for the Eclipse Tomcat server. In the **Servers** view, double-click the Tomcat 9 server, open its launch configuration (or use **Run** → **Run Configurations...** → **Apache Tomcat**), then open the **Environment** tab and add these variables:
+   - `JDBC_URL` — the TiDB JDBC URL selecting `citycare_db`, including `sslMode=VERIFY_IDENTITY`.
+   - `DB_USER` — the exact instance-prefixed username shown in TiDB Cloud.
+   - `DB_PASSWORD` — the TiDB password.
+
+   Enter the values privately in Eclipse. Do not put them in Java source, JSP files, or Git. If Eclipse was already open when Windows environment variables were set, restart Eclipse or add the variables directly to this Tomcat launch configuration.
+7. Make sure the five tables are present in `citycare_db` (`departments`, `users`, `officers`, `complaints`, and `complaint_history`). If this is a new database, execute `database/citycare_db.sql` once using TiDB Cloud SQL Editor; the script creates the demo users with the passwords listed in Section 8.
+8. Right-click on the server and click **Clean...** if available, then **Start**.
+9. Access the application in your browser at:
    ```
    http://localhost:8080/CityCare/
    ```
+
+The demo login buttons only fill the email, password, and role fields. Authentication still reads the matching active account from the database. If database configuration or connectivity fails, the login page reports that the database is unavailable; details appear in the Eclipse Tomcat console without printing credentials.
 
 ---
 

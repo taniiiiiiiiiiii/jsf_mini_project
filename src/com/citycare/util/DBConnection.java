@@ -35,6 +35,8 @@ public class DBConnection {
                 || JDBC_USER == null || JDBC_USER.isBlank()
                 || JDBC_PASSWORD == null || JDBC_PASSWORD.isBlank()) {
 
+            LOGGER.severe("Database configuration is incomplete. Configure JDBC_URL, DB_USER, and DB_PASSWORD in the application server launch environment.");
+
             throw new SQLException(
                     "Missing database environment variables.");
         }
